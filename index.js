@@ -50,8 +50,18 @@ const upload = multer({
 
 const app = express();
 app.use(cors());
+let whiteList = ["http://localhost:3000", "https://httpbin.org/post"];
+let corsOption = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) != 1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Server tidak diizinkan akses oleh CORS"));
+    }
+  },
+};
 
-app.post("/profile", upload.single("avatar"), (req, res) => {
+app.post("/profile", upload.single("file"), cors(corsOption), (req, res) => {
   res.send(req.file);
   console.log("path", req.file.path);
 });
