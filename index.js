@@ -7,19 +7,6 @@ const db = require("./db");
 const minio = require("minio");
 const cors = require("cors");
 
-app.use(cors());
-
-let whiteList = ["http://localhost:3000", "https://httpbin.org/post"];
-let corsOption = {
-  origin: function (origin, callback) {
-    if (whiteList.indexOf(origin) != 1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Server tidak diizinkan akses oleh CORS"));
-    }
-  },
-};
-
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "./uploads");
@@ -101,6 +88,18 @@ async function uploadClodinary(filePath) {
   }
 }
 
+app.use(cors());
+let whiteList = ["http://localhost:3000", "https://httpbin.org/post"];
+let corsOption = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) != 1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Server tidak diizinkan akses oleh CORS"));
+    }
+  },
+};
+
 app.post(
   "/upload",
   upload.single("file"),
@@ -135,7 +134,7 @@ app.post(
 
 app.post(
   "/profile",
-  upload.single("avatar"),
+  upload.single("file"),
   cors(corsOption),
   async (req, res) => {
     // res.send(req.file);
