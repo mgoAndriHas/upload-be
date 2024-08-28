@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
 
+app.use(cors());
+
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "./uploads");
@@ -49,7 +51,6 @@ const upload = multer({
 });
 
 const app = express();
-app.use(cors());
 
 app.post("/profile", upload.single("avatar"), (req, res) => {
   res.send(req.file);
