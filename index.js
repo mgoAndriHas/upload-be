@@ -93,6 +93,7 @@ let whiteList = [
   "https://petitemart.click",
   "https://petitemart.click:3000",
   "https://httpbin.org/post",
+  "http://petitemart.click:5001",
 ];
 let corsOption = {
   origin: function (origin, callback) {
