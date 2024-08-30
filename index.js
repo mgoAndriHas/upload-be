@@ -89,7 +89,11 @@ async function uploadClodinary(filePath) {
 }
 
 app.use(cors());
-let whiteList = ["http://petitemart.click", "https://httpbin.org/post"];
+let whiteList = [
+  "https://petitemart.click",
+  "https://httpbin.org/post",
+  "https://petitemart.click:3000",
+];
 let corsOption = {
   origin: function (origin, callback) {
     if (whiteList.indexOf(origin) != 1) {
