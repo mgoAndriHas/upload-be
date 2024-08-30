@@ -29,7 +29,6 @@ jobs:
             source ~/.nvm/nvm.sh
             cd ~/upload-be
             npm install --omit=dev
-            pm2 start index.js 
             pm2 stop all 
-            pm2 serve build 3000 --spa 
+            pm2 start index.js 
             pm2 restart all
