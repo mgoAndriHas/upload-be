@@ -17,7 +17,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
           REMOTE_HOST: ${{secrets.IP_ADDRESS}}
           REMOTE_USER: ${{secrets.USERNAME}}
-          TARGET: ~/Dropzone-fe
+          TARGET: ~/upload-be
       - name: reload app
         uses: appleboy/ssh-action@master
         with:
@@ -27,7 +27,7 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd ~/Dropzone-fe
+            cd ~/upload-be
             npm install --omit=dev
             pm2 start index.js 
             pm2 stop all 
