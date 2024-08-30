@@ -1,0 +1,35 @@
+# repo/.github/workflows/main.yml
+name: CI/CD
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: deploy to server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_KEY}}
+          REMOTE_HOST: ${{secrets.IP_ADDRESS}}
+          REMOTE_USER: ${{secrets.USERNAME}}
+          TARGET: ~/Dropzone-fe
+      - name: reload app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.IP_ADDRESS}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.SSH_KEY}}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd ~/Dropzone-fe
+            npm install --omit=dev
+            npm run build
+            pm2 stop all 
+            pm2 serve build 3000 --spa 
+            pm2 restart all
